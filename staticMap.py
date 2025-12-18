@@ -57,7 +57,8 @@ class StaticMap:
 
     def clearMarkers(self):
         self.markers = []
-        del self.params["markers"]
+        if "markers" in self.params:
+            del self.params["markers"]
 
 
     def getMapImage(self):
