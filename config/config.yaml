@@ -1,0 +1,19 @@
+default_layout:
+  center_lat: 37.337156
+  center_lng: 126.714823
+  zoom_level: 17
+marker_update_interval: 1000
+naver_client:
+  id: 8gb7psb7va
+  key: kxMfI6KAheWqQr5wCiERijZMjOQVowj3KRWgH4Eo
+ntrip_settings:
+  host_address: RTS1.ngii.go.kr
+  host_port: 2101
+  mount_point: RTK-RTCM32
+  user_id: ohsh8080
+  user_pw: ngii
+sensors_ip:
+  127.0.0.1: ch1
+window_settings:
+  height: 1080
+  width: 1920
