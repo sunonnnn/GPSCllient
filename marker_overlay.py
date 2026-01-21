@@ -7,42 +7,42 @@ import math
 WGS84_A = 6378137.0  # 장반경 (m)
 WGS84_E2 = 0.00669437999014  # 이심률^2
 
-def geodetic_to_ecef(lat, lon, alt=0.0):
+def geodetic_to_ecef(lat, lng, alt=0.0):
     lat_rad = math.radians(lat)
-    lon_rad = math.radians(lon)
+    lng_rad = math.radians(lng)
     
     N = WGS84_A / math.sqrt(1 - WGS84_E2 * math.sin(lat_rad)**2)
     
-    x = (N + alt) * math.cos(lat_rad) * math.cos(lon_rad)
-    y = (N + alt) * math.cos(lat_rad) * math.sin(lon_rad)
+    x = (N + alt) * math.cos(lat_rad) * math.cos(lng_rad)
+    y = (N + alt) * math.cos(lat_rad) * math.sin(lng_rad)
     z = (N * (1 - WGS84_E2) + alt) * math.sin(lat_rad)
     
     return x, y, z
 
-def ecef_to_enu(x, y, z, ref_lat, ref_lon, ref_alt=0.0):
-    ref_x, ref_y, ref_z = geodetic_to_ecef(ref_lat, ref_lon, ref_alt)
+def ecef_to_enu(x, y, z, ref_lat, ref_lng, ref_alt=0.0):
+    ref_x, ref_y, ref_z = geodetic_to_ecef(ref_lat, ref_lng, ref_alt)
     
     dx = x - ref_x
     dy = y - ref_y
     dz = z - ref_z
     
     lat_rad = math.radians(ref_lat)
-    lon_rad = math.radians(ref_lon)
+    lng_rad = math.radians(ref_lng)
     
     sin_lat = math.sin(lat_rad)
     cos_lat = math.cos(lat_rad)
-    sin_lon = math.sin(lon_rad)
-    cos_lon = math.cos(lon_rad)
+    sin_lng = math.sin(lng_rad)
+    cos_lng = math.cos(lng_rad)
     
-    e = -sin_lon * dx + cos_lon * dy
-    n = -sin_lat * cos_lon * dx - sin_lat * sin_lon * dy + cos_lat * dz
-    u = cos_lat * cos_lon * dx + cos_lat * sin_lon * dy + sin_lat * dz
+    e = -sin_lng * dx + cos_lng * dy
+    n = -sin_lat * cos_lng * dx - sin_lat * sin_lng * dy + cos_lat * dz
+    u = cos_lat * cos_lng * dx + cos_lat * sin_lng * dy + sin_lat * dz
     
     return e, n, u
 
-def geodetic_to_enu(lat, lon, alt, ref_lat, ref_lon, ref_alt=0.0):
-    x, y, z = geodetic_to_ecef(lat, lon, alt)
-    return ecef_to_enu(x, y, z, ref_lat, ref_lon, ref_alt)
+def geodetic_to_enu(lat, lng, alt, ref_lat, ref_lng, ref_alt=0.0):
+    x, y, z = geodetic_to_ecef(lat, lng, alt)
+    return ecef_to_enu(x, y, z, ref_lat, ref_lng, ref_alt)
 
 def cal_meters_per_pixel(lat, zoom):
     zoom += 1  # Naver Maps zoom level adjustment
