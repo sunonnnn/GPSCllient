@@ -182,6 +182,7 @@ class SensorListWidget(QWidget):
         gps_item = self.sensor_items[ip]["gps"]
         gps_item.setText(0, f"GPS: {lat:.6f},\n     {lng:.6f}")
         gps_item.setForeground(0, QColor(0, 100, 200))  # 파랑
+        self.tree_widget.resizeColumnToContents(0)
     
     def clear(self):
         self.tree_widget.clear()

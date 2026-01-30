@@ -248,10 +248,10 @@ class SensorClient:
                     
                     if data == b'01':
                         power = True
-                        print(f"Power ON received from {ip}")
+                        # print(f"Power ON received from {ip}")
                     elif data == b'00':
                         power = False
-                        print(f"Power OFF received from {ip}")
+                        # print(f"Power OFF received from {ip}")
                     else:
                         continue
                     
@@ -290,6 +290,7 @@ class SensorClient:
                             break
                     
                     data = packet.decode('utf-8', errors='ignore')
+                    print(data)
                     fields = data.split(',')
                     
                     self.nmea_message = data.strip()
@@ -306,12 +307,13 @@ class SensorClient:
                                 # quality: 0=No fix, 1=GPS, 2=DGPS, 4=RTK fixed, 5=RTK float
                                 if quality == 4:
                                     self.rtk_status[ip] = 'fixed'
-                                    print(f"RTK Fixed: {ip}")
+                                    print(f"RTK Fixed: {ip}, lng: {lng}, lat: {lat}")
                                 elif quality == 5:
                                     self.rtk_status[ip] = 'float'
-                                    print(f"RTK Float: {ip}")
+                                    print(f"RTK Float: {ip}, lng: {lng}, lat: {lat}")
                                 else:
                                     self.rtk_status[ip] = 'none'
+                                    print(f"RTK None: {ip}, lng: {lng}, lat: {lat}")
                                 
                             except (ValueError, IndexError) as e:
                                 print(f"GPS parse error ({ip}): {e}")
@@ -328,7 +330,6 @@ class SensorClient:
         for ip, sock in list(self.gps_sockets.items()):
             try:
                 sock.send(rtcm_data)
-                print(f"Sent RTCM data to {ip} ({len(rtcm_data)} bytes)")
             except Exception as e:
                 print(f"Error sending RTCM to {ip}: {e}")
 
